@@ -13,7 +13,7 @@
             android:clickable="true" android:layout_height="match_parent" />
     </LinearLayout>
     <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
-    <com.fanslersoft.redditlive.ScrimInsetsFrameLayout android:id="@+id/scrimInsetsFrameLayout"
+    <FrameLayout android:id="@+id/scrimInsetsFrameLayout"
         android:layout_width="@dimen/navigation_drawer_width" android:layout_height="wrap_content"
         android:fitsSystemWindows="true" android:layout_gravity="start" app:insetForeground="#4000"
         android:elevation="10dp">
@@ -21,8 +21,8 @@
             android:name="com.fanslersoft.redditlive.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent" android:fitsSystemWindows="true"
-            app:layout="@layout/fragment_navigation_drawer" />
-    </com.fanslersoft.redditlive.ScrimInsetsFrameLayout>
+            android:layout="@layout/fragment_navigation_drawer" />
+    </FrameLayout>
 
 
 </android.support.v4.widget.DrawerLayout>

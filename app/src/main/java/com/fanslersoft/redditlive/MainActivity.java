@@ -33,14 +33,12 @@ public class MainActivity extends ActionBarActivity
 
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
-        // populate the navigation drawer
-        mNavigationDrawerFragment.setUserData("Reddit Account", "Information", BitmapFactory.decodeResource(getResources(), R.drawable.avatar));
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, String subreddit) {
         // update the main content by replacing fragments
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Menu item selected -> " + position + " Subreddit -> " + subreddit, Toast.LENGTH_SHORT).show();
     }
 
 

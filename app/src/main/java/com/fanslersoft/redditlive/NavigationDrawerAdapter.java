@@ -44,7 +44,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                    v.setSelected(true);
                    mSelectedView = v;
                    if (mNavigationDrawerCallbacks != null)
-                       mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewHolder.getAdapterPosition());
+                       mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewHolder.getAdapterPosition(), (String)viewHolder.textView.getText());
                }
            }
         );
@@ -55,6 +55,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     @Override
     public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, int i) {
         viewHolder.textView.setText(mData.get(i).getText());
+        viewHolder.subTextView.setText(mData.get(i).getSubText());
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
         if (mSelectedPosition == i) {
             if (mSelectedView != null) {
@@ -65,6 +66,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             mSelectedView.setSelected(true);
         }
     }
+
 
 
     public void selectPosition(int position) {
@@ -79,10 +81,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
-
+        public TextView subTextView;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.item_name);
+            textView = (TextView) itemView.findViewById(R.id.subreddit);
+            subTextView = (TextView) itemView.findViewById(R.id.subredditDescription);
         }
     }
 }

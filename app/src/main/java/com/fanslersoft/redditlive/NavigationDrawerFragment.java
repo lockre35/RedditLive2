@@ -41,7 +41,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      * Remember the position of the selected item.
      */
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
+    private static final String STATE_SELECTED_SUBREDDIT = "selected_navigation_drawer_subreddit";
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
@@ -63,6 +63,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
+    private String mSelectedSubreddit = "All";
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -77,6 +78,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            mSelectedSubreddit = savedInstanceState.getString(STATE_SELECTED_SUBREDDIT);
             mFromSavedInstanceState = true;
         }
     }
@@ -95,7 +97,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(navigationItems);
         adapter.setNavigationDrawerCallbacks(this);
         mDrawerList.setAdapter(adapter);
-        selectItem(mCurrentSelectedPosition);
+        selectItem(mCurrentSelectedPosition, mSelectedSubreddit);
         return view;
     }
 
@@ -112,27 +114,27 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        selectItem(position);
+    public void onNavigationDrawerItemSelected(int position, String subreddit) {
+        selectItem(position, subreddit);
     }
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_menu_check)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_menu_check)));
+        items.add(new NavigationItem("item 1", "subtext"));
+        items.add(new NavigationItem("item 2", "subtext"));
+        items.add(new NavigationItem("item 3", "subtext"));
+        items.add(new NavigationItem("item 1", "subtext"));
+        items.add(new NavigationItem("item 2", "subtext"));
+        items.add(new NavigationItem("item 3", "subtext"));
+        items.add(new NavigationItem("item 1", "subtext"));
+        items.add(new NavigationItem("item 2", "subtext"));
+        items.add(new NavigationItem("item 3", "subtext"));
+        items.add(new NavigationItem("item 1", "subtext"));
+        items.add(new NavigationItem("item 2", "subtext"));
+        items.add(new NavigationItem("item 3", "subtext"));
+        items.add(new NavigationItem("item 1", "subtext"));
+        items.add(new NavigationItem("item 2", "subtext"));
+        items.add(new NavigationItem("item 3", "subtext"));
         return items;
     }
 
@@ -164,8 +166,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 if (!isAdded()) return;
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
@@ -175,7 +176,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
+            //mDrawerLayout.openDrawer(mFragmentContainerView);
         }
 
         // Defer code dependent on restoration of previous instance state.
@@ -189,13 +190,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    private void selectItem(int position, String subreddit) {
         mCurrentSelectedPosition = position;
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(position, subreddit);
         }
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
@@ -228,6 +229,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+        outState.putString(STATE_SELECTED_SUBREDDIT, mSelectedSubreddit);
     }
 
     @Override
@@ -237,96 +239,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mActionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public void setUserData(String user, String email, Bitmap avatar) {
-        ImageView avatarContainer = (ImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
-        ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
-        ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
-        avatarContainer.setImageDrawable(new RoundImage(avatar));
-    }
-
     public View getGoogleDrawer() {
         return mFragmentContainerView.findViewById(R.id.googleDrawer);
     }
 
-    public static class RoundImage extends Drawable {
-        private final Bitmap mBitmap;
-        private final Paint mPaint;
-        private final RectF mRectF;
-        private final int mBitmapWidth;
-        private final int mBitmapHeight;
-
-        public RoundImage(Bitmap bitmap) {
-            mBitmap = bitmap;
-            mRectF = new RectF();
-            mPaint = new Paint();
-            mPaint.setAntiAlias(true);
-            mPaint.setDither(true);
-            final BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            mPaint.setShader(shader);
-
-            mBitmapWidth = mBitmap.getWidth();
-            mBitmapHeight = mBitmap.getHeight();
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            canvas.drawOval(mRectF, mPaint);
-        }
-
-        @Override
-        protected void onBoundsChange(Rect bounds) {
-            super.onBoundsChange(bounds);
-            mRectF.set(bounds);
-        }
-
-        @Override
-        public void setAlpha(int alpha) {
-            if (mPaint.getAlpha() != alpha) {
-                mPaint.setAlpha(alpha);
-                invalidateSelf();
-            }
-        }
-
-        @Override
-        public void setColorFilter(ColorFilter cf) {
-            mPaint.setColorFilter(cf);
-        }
-
-        @Override
-        public int getOpacity() {
-            return PixelFormat.TRANSLUCENT;
-        }
-
-        @Override
-        public int getIntrinsicWidth() {
-            return mBitmapWidth;
-        }
-
-        @Override
-        public int getIntrinsicHeight() {
-            return mBitmapHeight;
-        }
-
-        public void setAntiAlias(boolean aa) {
-            mPaint.setAntiAlias(aa);
-            invalidateSelf();
-        }
-
-        @Override
-        public void setFilterBitmap(boolean filter) {
-            mPaint.setFilterBitmap(filter);
-            invalidateSelf();
-        }
-
-        @Override
-        public void setDither(boolean dither) {
-            mPaint.setDither(dither);
-            invalidateSelf();
-        }
-
-        public Bitmap getBitmap() {
-            return mBitmap;
-        }
-
-    }
 }
